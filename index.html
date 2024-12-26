@@ -77,7 +77,7 @@
             flex-direction: column;
         }
 
-        iframe {
+        .iframe.first{
             width: 300px;
             height: 300px;
             border: none;
@@ -85,12 +85,20 @@
             margin-bottom: 10px;
             /* Space between iframes */
         }
+        .iframe.second{
+            width: 450px;
+            height: 260px;
+            border: none;
+            filter: invert(.9) saturate(0.5) hue-rotate(145deg);
+            /*margin-bottom: 10px; */
+            /* Space between iframes */
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <iframe src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
+        <iframe class = "iframe first" src="https://calendar.google.com/calendar/embed?src=meeremans.jasper%40gmail.com&ctz=Europe%2FBrussels"
             style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
 
         <div class="clock">
@@ -99,12 +107,10 @@
             <div class="hand second" id="second"></div>
         </div>
         <div class="iframe-container">
-            <iframe
-                src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
-                style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
-            <iframe
-                src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
-                style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+            <iframe class = "iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
+                src="https://thingspeak.com/channels/2795417/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+            <iframe class = "iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
+                src="https://thingspeak.com/channels/2795417/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
         </div>
     </div>
     <script>

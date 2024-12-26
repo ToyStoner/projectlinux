@@ -1,5 +1,5 @@
-
 import asyncio
+import requests
 from bleak import BleakClient
 import mysql.connector
 from mysql.connector import Error
@@ -8,6 +8,10 @@ from mysql.connector import Error
 DEVICE_ADDRESS = "53:03:E9:25:A5:C3"
 HUMIDITY_CHARACTERISTIC_UUID = "00002a6f-0000-1000-8000-00805f9b34fb"
 TEMPERATURE_CHARACTERISTIC_UUID = "00002a6e-0000-1000-8000-00805f9b34fb"
+
+# ThingSpeak API configuration
+THINGSPEAK_API_KEY = "GE08E5B650OT2X84"
+THINGSPEAK_URL = "https://api.thingspeak.com/update"
 
 def store_sensor_data(humidity, temperature):
     try:
@@ -34,6 +38,20 @@ def store_sensor_data(humidity, temperature):
             cursor.close()
             connection.close()
 
+def send_to_thingspeak(humidity, temperature):
+    try:
+        response = requests.get(THINGSPEAK_URL, params={
+            'api_key': THINGSPEAK_API_KEY,
+            'field1': temperature,
+            'field2': humidity
+        })
+        if response.status_code == 200:
+            print("Data successfully sent to ThingSpeak")
+        else:
+            print(f"Failed to send data to ThingSpeak: {response.status_code}")
+    except Exception as e:
+        print(f"Exception occurred while sending data to ThingSpeak: {e}")
+
 async def read_sensor_data():
     try:
         async with BleakClient(DEVICE_ADDRESS) as client:
@@ -47,6 +65,7 @@ async def read_sensor_data():
                 print(f"Humidity: {humidity_value}%")
                 print(f"Temperature: {temperature_value}°C")
                 store_sensor_data(humidity_value, temperature_value)
+                send_to_thingspeak(humidity_value, temperature_value)
             except Exception as e:
                 print(f"Failed to read sensor data: {e}")
     except Exception as e:
