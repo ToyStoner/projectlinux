@@ -8,25 +8,20 @@
     <style>
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
             margin: 0;
             background-color: #333;
             /* Dark gray background */
-        }
-
-        .container {
-            display: flex;
-            align-items: center;
         }
 
         .digital-clock {
             font-size: 48px;
             color: #00f;
             /* Dark neon blue text */
-            margin: 0 10px;
-            /* Adjusted margin */
+            margin-bottom: 20px;
+            /* Space below the clock */
         }
 
         .iframe-container {
@@ -34,39 +29,37 @@
             flex-direction: column;
         }
 
-        .iframe.first {
-            width: 300px;
-            height: 300px;
+        .iframe {
             border: none;
             filter: invert(.9) saturate(0.5) hue-rotate(145deg);
             margin-bottom: 10px;
             /* Space between iframes */
         }
 
+        .iframe.first {
+            width: 300px;
+            height: 300px;
+        }
+
         .iframe.second {
             width: 450px;
             height: 260px;
-            border: none;
-            filter: invert(.9) saturate(0.5) hue-rotate(145deg);
-            /*margin-bottom: 10px; */
-            /* Space between iframes */
         }
     </style>
 </head>
 
 <body>
-    <div class="container"></div>
-        <iframe class="iframe first" src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Europe%2FBrussels&showPrint=0&src=bWVlcmVtYW5zLmphc3BlckBnbWFpbC5jb20&src=bmwuYmUjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=cGF1bGllbnZlcm1hZXJrZTAzQGdtYWlsLmNvbQ&color=%23039BE5&color=%23009688&color=%233F51B5" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+    <div class="digital-clock" id="digital-clock"></div>
 
-        <div class="digital-clock" id="digital-clock"></div>
+    <iframe class="iframe first" src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Europe%2FBrussels&showPrint=0&src=bWVlcmVtYW5zLmphc3BlckBnbWFpbC5jb20&src=bmwuYmUjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=cGF1bGllbnZlcm1hZXJrZTAzQGdtYWlsLmNvbQ&color=%23039BE5&color=%23009688&color=%233F51B5" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
 
-        <div class="iframe-container">
-            <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
-                src="https://thingspeak.com/channels/2795417/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-            <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
-                src="https://thingspeak.com/channels/2795417/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
-        </div>
+    <div class="iframe-container">
+        <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
+            src="https://thingspeak.com/channels/2795417/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
+        <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
+            src="https://thingspeak.com/channels/2795417/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
     </div>
+
     <script>
         function updateClock() {
             const now = new Date();
