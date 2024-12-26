@@ -55,7 +55,7 @@ async def read_sensor_data():
 async def main():
     while True:
         await read_sensor_data()
-        await asyncio.sleep(10)
+        await asyncio.sleep(3)
 
 if __name__ == "__main__":
     asyncio.run(main())
