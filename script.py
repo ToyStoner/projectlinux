@@ -2,6 +2,7 @@
 import asyncio
 from bleak import BleakClient
 import mysql.connector
+from mysql.connector import Error
 
 # Replace with your device's MAC address
 DEVICE_ADDRESS = "53:03:E9:25:A5:C3"
@@ -10,14 +11,18 @@ TEMPERATURE_CHARACTERISTIC_UUID = "00002a6e-0000-1000-8000-00805f9b34fb"
 
 def store_sensor_data(humidity, temperature):
     try:
-        connection = mysql.connector.connect(
-            host="localhost",
-            user="meejas",
-            password="jasper",
-            database="environment"
-        )
-        if connection.is_connected():
-            print("Successfully connected to the database")
+        try:
+            connection = mysql.connector.connect(
+                host="localhost",
+                user="meejas",
+                password="jasper",
+                database="environment"
+            )
+            if connection.is_connected():
+                print("Successfully connected to the database")
+        except Error as e:
+            print(f"Error while connecting to MySQL: {e}")
+            return
         cursor = connection.cursor()
         query = "INSERT INTO measurements (humidity, temperature) VALUES (%s, %s)"
         cursor.execute(query, (humidity, temperature))
@@ -29,16 +34,26 @@ def store_sensor_data(humidity, temperature):
             cursor.close()
             connection.close()
 
-async def read_sensor_data():
-    async with BleakClient(DEVICE_ADDRESS, timeout=60.0) as client:
-        humidity = await client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
-        temperature = await client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
-        
-        humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
-        temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
-        
-        print(f"Humidity: {humidity_value}%")
-        print(f"Temperature: {temperature_value}°C")
+def read_sensor_data():
+    try:
+        client = BleakClient(DEVICE_ADDRESS)
+        client.connect()
+        try:
+            humidity = client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
+            temperature = client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
+            
+            humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
+            temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
+            
+            print(f"Humidity: {humidity_value}%")
+            print(f"Temperature: {temperature_value}°C")
+            store_sensor_data(humidity_value, temperature_value)
+        except Exception as e:
+            print(f"Failed to read sensor data: {e}")
+        finally:
+            client.disconnect()
+    except Exception as e:
+        print(f"Failed to connect to the BLE device: {e}")
 
 async def main():
     while True:
