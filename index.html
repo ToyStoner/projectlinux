@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,61 +12,100 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #333; /* Dark gray background */
+            background-color: #333;
+            /* Dark gray background */
         }
+
         .container {
             display: flex;
             align-items: center;
         }
+
         .clock {
-            width: 160px; /* Adjusted width */
-            height: 160px; /* Adjusted height */
-            border: 8px solid #00f; /* Adjusted border */
+            width: 160px;
+            /* Adjusted width */
+            height: 160px;
+            /* Adjusted height */
+            border: 8px solid #00f;
+            /* Adjusted border */
             border-radius: 50%;
             position: relative;
-            background: #555; /* Lighter gray background */
-            border: 8px solid #888; /* Lighter gray border */
-            margin: 0 10px; /* Adjusted margin */
+            background: #555;
+            /* Lighter gray background */
+            border: 8px solid #888;
+            /* Lighter gray border */
+            margin: 0 10px;
+            /* Adjusted margin */
         }
+
         .hand {
             width: 50%;
-            height: 3px; /* Adjusted height */
-            background: #00f; /* Dark neon blue hands */
+            height: 3px;
+            /* Adjusted height */
+            background: #00f;
+            /* Dark neon blue hands */
             position: absolute;
             top: 50%;
             transform-origin: 100%;
             transform: rotate(90deg);
             transition: transform 0.5s ease-in-out;
         }
+
         .hand.hour {
-            height: 4px; /* Adjusted height */
-            background: #000; /* Black hour hand */
+            height: 4px;
+            /* Adjusted height */
+            background: #000;
+            /* Black hour hand */
         }
+
         .hand.minute {
-            height: 3px; /* Adjusted height */
-            background: #000; /* Black minute hand */
+            height: 3px;
+            /* Adjusted height */
+            background: #000;
+            /* Black minute hand */
         }
+
         .hand.second {
-            height: 2px; /* Adjusted height */
-            background: #000; /* Black second hand */
+            height: 2px;
+            /* Adjusted height */
+            background: #000;
+            /* Black second hand */
         }
+
+        .iframe-container {
+            display: flex;
+            flex-direction: column;
+        }
+
         iframe {
             width: 300px;
             height: 300px;
             border: none;
             filter: invert(.9) saturate(0.5) hue-rotate(145deg);
+            margin-bottom: 10px;
+            /* Space between iframes */
         }
     </style>
 </head>
+
 <body>
-    <div class="container"></div>
-        <iframe src="https://calendar.google.com/calendar/embed?src=meeremans.jasper%40gmail.com&ctz=Europe%2FBrussels" style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+    <div class="container">
+        <iframe src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
+            style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+
         <div class="clock">
             <div class="hand hour" id="hour"></div>
             <div class="hand minute" id="minute"></div>
             <div class="hand second" id="second"></div>
         </div>
-        <iframe src="https://calendar.google.com/calendar/embed?src=meeremans.jasper%40gmail.com&ctz=Europe%2FBrussels" style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+        <div class="iframe-container">
+            <iframe
+                src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
+                style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+            <iframe
+                src="https://calendar.google.com/calendar/ical/meeremans.jasper%40gmail.com/private-1d74bac4e2da5690c439e33574df94ec/basic.ics"
+                style="border: 0" width="400" height="600" frameborder="0" scrolling="no"></iframe>
+        </div>
     </div>
     <script>
         function updateClock() {
@@ -87,4 +127,5 @@
         updateClock();
     </script>
 </body>
+
 </html>
