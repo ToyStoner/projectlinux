@@ -14,7 +14,7 @@ async def read_sensor_data():
         humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
         temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
 
-        print("Sensor data: "+ humidity_value,HEX + " / "+ temperature_value,HEX)
+        #print("Sensor data: "+ humidity_value,HEX + " / "+ temperature_value,HEX)
         
         print(f"Humidity: {humidity_value}%")
         print(f"Temperature: {temperature_value}°C")
