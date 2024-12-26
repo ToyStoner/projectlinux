@@ -15,22 +15,20 @@ THINGSPEAK_URL = "https://api.thingspeak.com/update"
 
 def store_sensor_data(humidity, temperature):
     try:
-        try:
-            connection = mysql.connector.connect(
-                host="localhost",
-                user="meejas",
-                password="jasper",
-                database="environment"
-            )
-            if connection.is_connected():
-                print("Successfully connected to the database")
-        except Error as e:
-            print(f"Error while connecting to MySQL: {e}")
-            return
+        connection = mysql.connector.connect(
+            host="localhost",
+            user="meejas",
+            password="jasper",
+            database="environment"
+        )
+        if connection.is_connected():
+            print("Successfully connected to the database")
         cursor = connection.cursor()
         query = "INSERT INTO measurements (humidity, temperature) VALUES (%s, %s)"
         cursor.execute(query, (humidity, temperature))
         connection.commit()
+    except Error as e:
+        print(f"Error while connecting to MySQL: {e}")
     except mysql.connector.Error as err:
         print(f"Error: {err}")
     finally:
@@ -68,10 +66,16 @@ async def read_sensor_data(client):
         print(f"Failed to read sensor data: {e}")
 
 async def main():
-    async with BleakClient(DEVICE_ADDRESS) as client:
-        while True:
-            await read_sensor_data(client)
-            await asyncio.sleep(3)
+    while True:
+        try:
+            async with BleakClient(DEVICE_ADDRESS) as client:
+                while True:
+                    await read_sensor_data(client)
+                    await asyncio.sleep(3)
+        except Exception as e:
+            print(f"BLE client disconnected or failed to connect: {e}")
+            print("Reconnecting in 5 seconds...")
+            await asyncio.sleep(5)
 
 if __name__ == "__main__":
     asyncio.run(main())
