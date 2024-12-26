@@ -34,24 +34,21 @@ def store_sensor_data(humidity, temperature):
             cursor.close()
             connection.close()
 
-def read_sensor_data():
+async def read_sensor_data():
     try:
-        client = BleakClient(DEVICE_ADDRESS)
-        client.connect()
-        try:
-            humidity = client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
-            temperature = client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
-            
-            humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
-            temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
-            
-            print(f"Humidity: {humidity_value}%")
-            print(f"Temperature: {temperature_value}°C")
-            store_sensor_data(humidity_value, temperature_value)
-        except Exception as e:
-            print(f"Failed to read sensor data: {e}")
-        finally:
-            client.disconnect()
+        async with BleakClient(DEVICE_ADDRESS) as client:
+            try:
+                humidity = await client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
+                temperature = await client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
+                
+                humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
+                temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
+                
+                print(f"Humidity: {humidity_value}%")
+                print(f"Temperature: {temperature_value}°C")
+                store_sensor_data(humidity_value, temperature_value)
+            except Exception as e:
+                print(f"Failed to read sensor data: {e}")
     except Exception as e:
         print(f"Failed to connect to the BLE device: {e}")
 
