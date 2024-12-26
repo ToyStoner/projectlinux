@@ -52,29 +52,26 @@ def send_to_thingspeak(humidity, temperature):
     except Exception as e:
         print(f"Exception occurred while sending data to ThingSpeak: {e}")
 
-async def read_sensor_data():
+async def read_sensor_data(client):
     try:
-        async with BleakClient(DEVICE_ADDRESS) as client:
-            try:
-                humidity = await client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
-                temperature = await client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
-                
-                humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
-                temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
-                
-                print(f"Humidity: {humidity_value}%")
-                print(f"Temperature: {temperature_value}°C")
-                store_sensor_data(humidity_value, temperature_value)
-                send_to_thingspeak(humidity_value, temperature_value)
-            except Exception as e:
-                print(f"Failed to read sensor data: {e}")
+        humidity = await client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
+        temperature = await client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
+        
+        humidity_value = int.from_bytes(humidity, byteorder='little') / 100.0
+        temperature_value = int.from_bytes(temperature, byteorder='little') / 100.0
+        
+        print(f"Humidity: {humidity_value}%")
+        print(f"Temperature: {temperature_value}°C")
+        store_sensor_data(humidity_value, temperature_value)
+        send_to_thingspeak(humidity_value, temperature_value)
     except Exception as e:
-        print(f"Failed to connect to the BLE device: {e}")
+        print(f"Failed to read sensor data: {e}")
 
 async def main():
-    while True:
-        await read_sensor_data()
-        await asyncio.sleep(3)
+    async with BleakClient(DEVICE_ADDRESS) as client:
+        while True:
+            await read_sensor_data(client)
+            await asyncio.sleep(3)
 
 if __name__ == "__main__":
     asyncio.run(main())
