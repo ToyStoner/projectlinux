@@ -16,6 +16,8 @@ def store_sensor_data(humidity, temperature):
             password="jasper",
             database="environment"
         )
+        if connection.is_connected():
+            print("Successfully connected to the database")
         cursor = connection.cursor()
         query = "INSERT INTO measurements (humidity, temperature) VALUES (%s, %s)"
         cursor.execute(query, (humidity, temperature))
