@@ -8,12 +8,19 @@
     <style>
         body {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            flex-direction: row;
+            justify-content: space-between;
             padding: 20px;
             margin: 0;
             background-color: #333;
             /* Dark gray background */
+        }
+
+        .left-section,
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
         }
 
         .digital-clock {
@@ -22,11 +29,6 @@
             /* Dark neon blue text */
             margin-bottom: 20px;
             /* Space below the clock */
-        }
-
-        .iframe-container {
-            display: flex;
-            flex-direction: column;
         }
 
         .iframe {
@@ -49,11 +51,12 @@
 </head>
 
 <body>
-    <div class="digital-clock" id="digital-clock"></div>
+    <div class="left-section">
+        <div class="digital-clock" id="digital-clock"></div>
+        <iframe class="iframe first" src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Europe%2FBrussels&showPrint=0&src=bWVlcmVtYW5zLmphc3BlckBnbWFpbC5jb20&src=bmwuYmUjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=cGF1bGllbnZlcm1hZXJrZTAzQGdtYWlsLmNvbQ&color=%23039BE5&color=%23009688&color=%233F51B5" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
+    </div>
 
-    <iframe class="iframe first" src="https://calendar.google.com/calendar/embed?height=300&wkst=1&ctz=Europe%2FBrussels&showPrint=0&src=bWVlcmVtYW5zLmphc3BlckBnbWFpbC5jb20&src=bmwuYmUjaG9saWRheUBncm91cC52LmNhbGVuZGFyLmdvb2dsZS5jb20&src=cGF1bGllbnZlcm1hZXJrZTAzQGdtYWlsLmNvbQ&color=%23039BE5&color=%23009688&color=%233F51B5" style="border:solid 1px #777" width="300" height="300" frameborder="0" scrolling="no"></iframe>
-
-    <div class="iframe-container">
+    <div class="right-section">
         <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
             src="https://thingspeak.com/channels/2795417/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"></iframe>
         <iframe class="iframe second" width="450" height="260" style="border: 1px solid #cccccc;"
