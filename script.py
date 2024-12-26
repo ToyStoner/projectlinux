@@ -30,7 +30,7 @@ def store_sensor_data(humidity, temperature):
             connection.close()
 
 async def read_sensor_data():
-    async with BleakClient(DEVICE_ADDRESS) as client:
+    async with BleakClient(DEVICE_ADDRESS, timeout=60.0) as client:
         humidity = await client.read_gatt_char(HUMIDITY_CHARACTERISTIC_UUID)
         temperature = await client.read_gatt_char(TEMPERATURE_CHARACTERISTIC_UUID)
         
